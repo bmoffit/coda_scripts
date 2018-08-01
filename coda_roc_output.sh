@@ -9,7 +9,7 @@
 
 CODA_ROC=coda_roc_rc3
 ROC_ARGS="-type ROC -name ROC2"
-DTIME=$(date +%e%b%Y_%R)
+DTIME=$(date +%d%b%Y_%R)
 OUTFILE=/tmp/ROC_output_$DTIME
 
 check_exe ()
