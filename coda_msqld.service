@@ -9,10 +9,13 @@
 #    1. In [Service] below, replace the "Environment", "User",
 #       and "ExecStart" to match your CODA environment
 #
-#    2. Enable (as root):
-#         systemctl enable $PWD/coda_msqld.service
+#    2. Copy to system directory (as root)
+#       cp -v coda_msqld.service /usr/lib/systemd/system/
 #
-#    3. Start (as root):
+#    3. Enable (as root):
+#         systemctl enable coda_msqld.service
+#
+#    4. Start (as root):
 #         systemctl start coda_msqld
 #
 #   Restart with (either):
@@ -26,7 +29,7 @@
 
 [Unit]
 Description=CODA msql daemon
-After=network.target ypbind.service sssd.service network-online.target remote-fs.target
+After=network.target ypbind.service sssd.service network-online.target remote-fs.target autofs.service
 Wants=network-online.target
 
 [Service]
