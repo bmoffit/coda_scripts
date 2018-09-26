@@ -1,0 +1,43 @@
+############################################################
+#
+# coda_msqld.service
+#
+#    - Systemd Unit file for the CODA 2.x msqld service
+#
+#  Usage:
+#
+#    1. In [Service] below, replace the "Environment", "User",
+#       and "ExecStart" to match your CODA environment
+#
+#    2. Enable (as root):
+#         systemctl enable $PWD/coda_msqld.service
+#
+#    3. Start (as root):
+#         systemctl start coda_msqld
+#
+#   Restart with (either):
+#     - As root
+#         systemctl restart coda_msqld
+#
+#     - As "User"
+#         killall msqld
+#
+
+
+[Unit]
+Description=CODA msql daemon
+After=network.target ypbind.service sssd.service network-online.target remote-fs.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+Restart=always
+### These must match your CODA environment ###
+Environment="MSQL_HOME=/daqfs/home/moffit/coda/rcdb"
+User=moffit
+ExecStart=/site/coda/2.6.2/Linux/bin/msqld
+
+
+[Install]
+WantedBy=multi-user.target
+
