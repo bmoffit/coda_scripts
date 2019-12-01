@@ -1,0 +1,15 @@
+#!/bin/bash
+#
+#  restartStuff: kill off the PEB and ROCs.
+#     They should restart on their own, if they are run with
+#     the startCoda script
+#
+
+ROC_hosts="hallavme14pc sbsvme25 sbsvme30"
+
+for roc in $ROC_hosts
+do
+    ssh -x $roc killall coda_roc
+done
+
+pkill -f org.jlab.coda.emu.EmuFactory

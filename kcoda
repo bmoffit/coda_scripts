@@ -1,0 +1,19 @@
+#!/bin/bash
+#
+#  kcoda  - simplfied kcoda script
+#
+
+# RCGUI
+pkill -f org.jlab.coda.afecs.ui.rcgui.RcGuiApplication
+
+# PEB
+#pkill -f PEB_hallavme12pc
+#pkill -f org.jlab.coda.emu.EmuFactory
+# PEB done with kill_remotes.sh now
+
+# ROCs
+${HOME}/bin/kill_remotes.sh
+
+
+# PLATFORM
+pkill -f org.jlab.coda.afecs.platform.APlatform

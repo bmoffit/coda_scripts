@@ -1,0 +1,97 @@
+#!/bin/bash
+#
+# remote_vme <hostname> <username> <command for remote host>
+#
+CRATE=hallavme14pc
+USER_ARG=
+SSH_ARG=
+CONNECT_TIMEOUT=600
+
+isConnected=0
+iter=0
+
+if [ "$#" -eq 1 ]; then  #server name provided
+    CRATE=$1
+elif [ "$#" -eq 2 ]; then  # server name then user name
+    CRATE=$1
+    USER_ARG="-l $2"
+elif [ "$#" -gt 2 ]; then  # more than that... must be the command to execute on ssh
+    CRATE=$1
+    USER_ARG="-l $2"
+    shift 2
+    SSH_ARG="$@"
+fi
+
+SSH_COMMAND="ssh -t -o ServerAliveInterval=10 $USER_ARG $CRATE $SSH_ARG"
+trap "exit" exit
+
+function updateTicker()
+{
+	let "iter += 1"
+	case "$iter" in
+	     0 ) printf " - " "";;
+	     1 ) printf " \ " "";;
+	     2 ) printf " | " "";;
+	     3 ) printf " / " ""; iter=-1;
+	esac
+}
+
+function checkCrate()
+{
+    local __hostname=$1
+    local tmpfile=`mktemp`
+
+    nmap -oG $tmpfile -T5 -p22 $__hostname > /dev/null
+    local statHostname=`grep -v "^#" $tmpfile | grep $CRATE | grep open`
+
+#    echo $statHostname
+
+    /bin/rm -f $tmpfile
+
+    printf "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
+    if [ -z "$statHostname" ]; then
+        printf "${CRATE}: Disconnected" ""
+        updateTicker
+	isConnected=0
+    else
+        printf "${CRATE}: Connected" ""
+	echo
+	isConnected=1
+    fi
+
+}
+
+while true; do
+
+    STARTTIME=$(date '+%s')
+    while [ $isConnected == 0 ]; do
+	checkCrate $CRATE isConnected
+	if [ $isConnected == 0 ]; then
+	    CURRENT=$(date '+%s')
+	    TIMEDIFF=$(($CURRENT-$STARTTIME))
+	    if [ "$TIMEDIFF" -gt "$CONNECT_TIMEOUT" ]; then
+		echo
+		echo "Connection Timeout"
+		exit;
+	    fi
+#	    echo TIMEDIFF = $TIMEDIFF
+	    sleep 5
+	else
+	    CURRENT=0
+	fi
+    done
+
+    echo
+    echo "****************************************"
+    echo "* SSHing to $CRATE"
+    echo "****************************************"
+    date
+    echo
+    ${SSH_COMMAND}
+    isConnected=0
+    echo
+    echo "****************************************"
+    echo "* ssh KILLED... RESTARTING"
+    echo "****************************************"
+    echo
+done
