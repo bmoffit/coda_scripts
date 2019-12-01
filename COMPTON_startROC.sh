@@ -10,7 +10,11 @@ ROCNAME=ROC1
 SETRF=
 
 if [ -z $CODA ]; then
-    source ~/env/setupCODA
+    if [ "$HOSTNAME" == "sbsvme28" ]; then
+	source ~/env/setupCODA
+    elif [ "$HOSTNAME" == "hallavtp1.jlab.org" ]; then
+	source ~/.bashrc
+    fi
 fi
 
 if [ "$HOSTNAME" == "sbsvme28" ]; then
@@ -35,7 +39,5 @@ echo "Starting ROC on" $HOSTNAME
 echo "   SESSION   =" $SESSION
 echo "   EXPID     =" $EXPID
 echo "   ROC name  =" $ROCNAME
-echo "   Directory =" $SBS_HOME
 echo "************************************************************"
-cd $SBS_HOME
-coda_roc -i -v -name $ROCNAME -session $SESSION -f $SETRF
+coda_roc -i -v -name $ROCNAME -session $SESSION

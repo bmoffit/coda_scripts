@@ -21,7 +21,7 @@ xterm -geometry 60x5+${XPOS}+0 -T "platform" -bg "red" \
       -e /bin/bash -c "platform" &
 sleep 8
 xterm -geometry 60x25+${XPOS}+375 -T "Event Builder" -bg "green" \
-      -e /bin/bash -c "PEB_eel124gemdaq" &
+      -e /bin/bash -c "PEB_atedf3" &
 xterm -geometry 60x5+${XPOS}+250 -T "rcgui" -bg "yellow" \
       -e /bin/bash -c "rcgui" &
 

@@ -1,1 +1,1 @@
-remote_vme atedf3 adaq bin/COMPTON_startPEB.sh
+remote_vme localhost adaq bin/COMPTON_startPEB.sh
