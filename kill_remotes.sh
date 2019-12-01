@@ -5,10 +5,10 @@
 #
 #
 
-HOSTNAMES="hallavme14pc sbsvme25"
+HOSTNAMES="hallavtp1 sbsvme28"
 
 # kill the local script (because it auto-restarts the ssh connection)
-pkill -f SBS_startROC.sh
+pkill -f COMPTON_startROC.sh
 
 
 # now kill the ROC, if it's still runnin gon the remote host
@@ -17,10 +17,10 @@ do
     ssh $host pkill coda_roc
 done
 
-HOSTNAMES="eel124gemdaq"
+HOSTNAMES="localhost"
 
 # kill the local script (because it auto-restarts the ssh connection)
-pkill -f SBS_startPEB.sh
+pkill -f COMPTON_startPEB.sh
 
 
 # now kill the ROC, if it's still runnin gon the remote host

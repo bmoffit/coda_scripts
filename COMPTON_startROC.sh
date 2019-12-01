@@ -4,23 +4,19 @@
 #
 
 # default roc name
-ROCNAME=ROCcrate0
+ROCNAME=ROC1
 
 # tcl script to set the randy factor
-SETRF=~/SBS-GEM-Cleanroom/rol/setrf.tcl
+SETRF=
 
 if [ -z $CODA ]; then
-    source ~/SBS-GEM-Cleanroom/env/setupCODA
-elif [ -z $SBS_HOME ]; then
-    source ~/SBS-GEM-Cleanroom/env/setupCODA
+    source ~/env/setupCODA
 fi
 
-if [ "$HOSTNAME" == "hallavme14pc" ]; then
-    ROCNAME=ROCcrate0
-elif [ "$HOSTNAME" == "sbsvme25" ]; then
-    ROCNAME=ROCcrate1
-elif [ "$HOSTNAME" == "sbsvme30" ]; then
-    ROCNAME=ROCcrate2
+if [ "$HOSTNAME" == "sbsvme28" ]; then
+    ROCNAME=ROC1
+elif [ "$HOSTNAME" == "hallavtp1.jlab.org" ]; then
+    ROCNAME=vtpROC
 else
     echo "ERROR.  unexpected host: $HOSTNAME"
     exit

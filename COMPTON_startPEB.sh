@@ -4,19 +4,18 @@
 #
 
 # default peb name
-PEBNAME=PEBcleanroom
+PEBNAME=PEB1
 
 if [ -z $CODA ]; then
-    source ~/SBS-GEM-Cleanroom/env/setupCODA
-elif [ -z $SBS_HOME ]; then
-    source ~/SBS-GEM-Cleanroom/env/setupCODA
+    export CODA=/site/coda/3.10
+    source ${CODA}/.setup
 fi
 
 PEB_ACTIVE=$(pgrep coda_emu_peb)
 if [ -n "$PEB_ACTIVE" ]; then
     echo "WARNING: coda_emu_peb already running"
     echo "         killing them"
-    killall -v coda_roc
+    killall -v coda_emu_peb
 fi
 
 
@@ -25,7 +24,5 @@ echo "Starting PEB on" $HOSTNAME
 echo "   SESSION   =" $SESSION
 echo "   EXPID     =" $EXPID
 echo "   PEB name  =" $PEBNAME
-echo "   Directory =" $SBS_HOME
 echo "************************************************************"
-cd $SBS_HOME
 coda_emu_peb $PEBNAME

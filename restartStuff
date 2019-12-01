@@ -5,7 +5,7 @@
 #     the startCoda script
 #
 
-ROC_hosts="hallavme14pc sbsvme25 sbsvme30"
+ROC_hosts="hallavtp1 sbsvme28"
 
 for roc in $ROC_hosts
 do

@@ -25,14 +25,10 @@ xterm -geometry 60x25+${XPOS}+375 -T "Event Builder" -bg "green" \
 xterm -geometry 60x5+${XPOS}+250 -T "rcgui" -bg "yellow" \
       -e /bin/bash -c "rcgui" &
 
-xterm -ls -n ROCcrate0 -title ROCcrate0--hallavme14pc \
+xterm -ls -n ROC1 -title ROC1--sbsvme28 \
       -bg white -fg black -sb -geometry 105x16+0+0 \
-      -e ROC_hallavme14pc &
+      -e ROC_sbsvme28 &
 
-xterm -ls -n ROCcrate1 -title ROCcrate1--sbsvme25 \
+xterm -ls -n vtpROC -title vtpROC--hallavtp1 \
       -bg white -fg black -sb -geometry 105x16+0+300 \
-      -e ROC_sbsvme25 &
-
-xterm -ls -n ROCcrate2 -title ROCcrate2--sbsvme30 \
-      -bg white -fg black -sb -geometry 105x16+0+600 \
-      -e ROC_sbsvme30 &
+      -e ROC_hallavtp1 &
