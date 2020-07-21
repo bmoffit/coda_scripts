@@ -1,0 +1,40 @@
+# -*-Shell-script-*-
+#
+# coda_conf_functions
+#  This file contains functions to be used to parse a coda component
+#  config file.
+#
+#  Currently parses
+#   CODA_COMPONENT_TABLE
+#
+
+CODA_COMPONENT_NAME=
+
+codaconf_get_component_name() {
+    local component_hostname=$1
+    local component_type=$2
+    local component_name=
+
+    component_name=$(sed -n -r \
+			 "s/^$component_hostname\s*$component_type\s*(.*)$/\1/p" \
+			 $CODA_COMPONENT_TABLE)
+
+    if [ -n "$component_name" ]; then
+	CODA_COMPONENT_NAME=$component_name
+	return 1
+    fi
+
+    echo ERROR: Component Name not found for hostname=$component_hostname, type=$component_type
+    return 0
+
+}
+
+
+CODA_COMPONENT_TABLE=config/expid/coda_component_table.cfg
+echo "************"
+cat $CODA_COMPONENT_TABLE
+echo "************"
+codaconf_get_component_name deepthought ROC
+codaconf_get_component_name deepthought PEB
+codaconf_get_component_name deepthought PEBa
+codaconf_get_component_name deepthoughter ROC
