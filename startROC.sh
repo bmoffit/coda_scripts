@@ -2,29 +2,24 @@
 #
 # Shell script to start coda_roc
 #
+#  FIXME: Need to support randy factor configuration
+#
+#
 
-# default roc name
-ROCNAME=ROC1
+
+if [ -z $CODA ]; then
+    echo "ERROR: CODA environment variable not defined!"
+    exit -1
+fi
+
+. coda_conf_functions
+
+codaconf_get_component_name deepthought ROC
+
+ROCNAME=$CODA_COMPONENT_NAME
 
 # tcl script to set the randy factor
 SETRF=
-
-if [ -z $CODA ]; then
-    if [ "$HOSTNAME" == "sbsvme28" ]; then
-	source ~/env/setupCODA
-    elif [ "$HOSTNAME" == "hallavtp1.jlab.org" ]; then
-	source ~/.bashrc
-    fi
-fi
-
-if [ "$HOSTNAME" == "sbsvme28" ]; then
-    ROCNAME=ROC1
-elif [ "$HOSTNAME" == "hallavtp1.jlab.org" ]; then
-    ROCNAME=vtpROC
-else
-    echo "ERROR.  unexpected host: $HOSTNAME"
-    exit
-fi
 
 ROC_ACTIVE=$(pgrep coda_roc)
 if [ -n "$ROC_ACTIVE" ]; then

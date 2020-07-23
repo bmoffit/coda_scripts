@@ -8,13 +8,12 @@
 #   CODA_COMPONENT_TABLE
 #
 
-CODA_COMPONENT_NAME=
-
 codaconf_get_component_name() {
     local component_hostname=$1
     local component_type=$2
     local component_name=
 
+    CODA_COMPONENT_NAME=
     component_name=$(sed -n -r \
 			 "s/^$component_hostname\s*$component_type\s*(.*)$/\1/p" \
 			 $CODA_COMPONENT_TABLE)

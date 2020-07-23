@@ -3,13 +3,16 @@
 # Shell script to start coda_emu_peb
 #
 
-# default peb name
-PEBNAME=PEB1
-
 if [ -z $CODA ]; then
-    export CODA=/site/coda/3.10
-    source ${CODA}/.setup
+    echo "ERROR: CODA environment variable not defined!"
+    exit -1
 fi
+
+. coda_conf_functions
+
+codaconf_get_component_name deepthought PEB
+
+PEBNAME=$CODA_COMPONENT_NAME
 
 PEB_ACTIVE=$(pgrep coda_emu_peb)
 if [ -n "$PEB_ACTIVE" ]; then
