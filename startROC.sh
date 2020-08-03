@@ -2,9 +2,6 @@
 #
 # Shell script to start coda_roc
 #
-#  FIXME: Need to support randy factor configuration
-#
-#
 
 
 if [ -z $CODA ]; then
@@ -12,14 +9,19 @@ if [ -z $CODA ]; then
     exit -1
 fi
 
+if [ -z $HOSTNAME ]; then
+    HOSTNAME=$(hostname -s)
+fi
+
 . coda_conf_functions
 
-codaconf_get_component_name deepthought ROC
-
+# Get the ROC component name
+codaconf_get_component_name $HOSTNAME ROC
 ROCNAME=$CODA_COMPONENT_NAME
 
-# tcl script to set the randy factor
-SETRF=
+# Get this ROC's commandline option
+codaconf_get_name_option $HOSTNAME $ROCNAME
+ROCOPTION=$CODA_COMPONENT_OPTION
 
 ROC_ACTIVE=$(pgrep coda_roc)
 if [ -n "$ROC_ACTIVE" ]; then
@@ -31,8 +33,9 @@ fi
 
 echo "************************************************************"
 echo "Starting ROC on" $HOSTNAME
-echo "   SESSION   =" $SESSION
-echo "   EXPID     =" $EXPID
-echo "   ROC name  =" $ROCNAME
+echo "   SESSION     =" $SESSION
+echo "   EXPID       =" $EXPID
+echo "   ROC name    =" $ROCNAME
+echo "   ROC option  =" $ROCOPTION
 echo "************************************************************"
-coda_roc -i -v -name $ROCNAME -session $SESSION
+coda_roc -i -v -name $ROCNAME -session $SESSION $ROCOPTION

@@ -5,11 +5,25 @@
 #     the startCoda script
 #
 
-ROC_hosts="hallavtp1 sbsvme28"
+. coda_conf_functions
 
+# Get list of ROC hosts
+coda_conf_get_component_list ROC
+ROC_hosts=${CODA_HOSTNAME_LIST[@]}
+
+# Get list of PEB hosts
+coda_conf_get_component_list PEB
+PEB_hosts=${CODA_HOSTNAME_LIST[@]}
+
+
+# Kill each ROC in the list
 for roc in $ROC_hosts
 do
     ssh -x $roc killall coda_roc
 done
 
-pkill -f org.jlab.coda.emu.EmuFactory
+# Kill each PEB in the list
+for peb in $PEB_hosts
+do
+    ssh -x $peb pkill -f org.jlab.coda.emu.EmuFactory
+done
