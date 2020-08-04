@@ -1,4 +1,4 @@
-# CSH Environment setup for CODA 3
+# BASH Environment setup for CODA 3
 
 # Prune any previous CODA defs in PATH and LD_LIBRARY_PATH
 
