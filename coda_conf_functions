@@ -18,6 +18,11 @@ if [ -z $CODA ]; then
     exit -1
 fi
 
+if [ -z $CODA_COMPONENT_TABLE ]; then
+    echo "ERROR: CODA_COMPONENT_TABLE environment variable not defined!"
+    exit -1
+fi
+
 
 #
 # codaconf_get_component_name hostname type
