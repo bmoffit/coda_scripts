@@ -11,6 +11,9 @@ source $CODA/.setup
 setenv SESSION session
 setenv EXPID expid
 
+setenv COOL_HOME cool_home
+setenv JAVA_HOME /group/da/Java/jdk/jdk1.8.0_152
+
 setenv REMEX_CMSG_HOST deepthought
 setenv REMEX_CMSG_PASSWORD ${EXPID}
 
