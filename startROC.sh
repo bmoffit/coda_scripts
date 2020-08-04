@@ -4,11 +4,6 @@
 #
 
 
-if [ -z $CODA ]; then
-    echo "ERROR: CODA environment variable not defined!"
-    exit -1
-fi
-
 if [ -z $HOSTNAME ]; then
     HOSTNAME=$(hostname -s)
 fi

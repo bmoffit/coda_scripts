@@ -6,7 +6,18 @@
 #
 #  Currently parses
 #   CODA_COMPONENT_TABLE
+#  Provides variables
+#   CODA_COMPONENT_NAME
+#   CODA_COMPONENT_OPTION
+#   CODA_HOSTMAME_LIST
 #
+#
+
+if [ -z $CODA ]; then
+    echo "ERROR: CODA environment variable not defined!"
+    exit -1
+fi
+
 
 #
 # codaconf_get_component_name hostname type
@@ -81,36 +92,3 @@ coda_conf_get_component_list() {
     return 0
 
 }
-
-CODA_COMPONENT_TABLE=config/expid/coda_component_table.cfg
-echo "************"
-cat $CODA_COMPONENT_TABLE
-echo "************"
-
-# These should pass
-codaconf_get_component_name deepthought ROC
-echo - $CODA_COMPONENT_NAME
-codaconf_get_component_name deepthought PEB
-echo - $CODA_COMPONENT_NAME
-
-# These should fail
-codaconf_get_component_name deepthought PEBa
-echo - $CODA_COMPONENT_NAME
-codaconf_get_component_name deepthoughter ROC
-echo - $CODA_COMPONENT_NAME
-
-
-# This should pass
-codaconf_get_name_option deepthought PEB1
-echo - $CODA_COMPONENT_OPTION
-codaconf_get_name_option localhost ROC2
-echo - $CODA_COMPONENT_OPTION
-
-# These should fail
-codaconf_get_name_option deepthought ROC1
-echo - $CODA_COMPONENT_OPTION
-codaconf_get_name_option deepthought PEB2
-echo - $CODA_COMPONENT_OPTION
-
-coda_conf_get_component_list ROC
-echo - ${#CODA_HOSTNAME_LIST[@]} ${CODA_HOSTNAME_LIST[@]}

@@ -1,10 +1,34 @@
 #!/bin/bash
 #
-# startCoda script for UVA GEM Cleanroom DAQ
+# startCoda example script
 #
-XPOS=1000
+PLATFORM_XPOS=40
 
+PEB_XPOS=$((PLATFORM_XPOS + 400))
+ROC_XPOS=$((PEB_XPOS + 400))
+
+PEB_YPOS=40
+ROC_YPOS=$((PEB_YPOS))
+
+PEB_YPOS_INCR=400
+ROC_YPOS_INCR=400
+
+. coda_conf_functions
+
+# CODA 3 platform needs JAVA_HOME and COOL_HOME defined
+if [ -z $JAVA_HOME ]; then
+    echo "ERROR: \$JAVA_HOME not defined!"
+    exit 1
+fi
+if [ -z $COOL_HOME ]; then
+    echo "ERROR: \$COOL_HOME not defined!"
+    exit 1
+fi
+
+
+# Check for previous startCoda remnants
 pidlist=`pgrep platform; pgrep rcgui; pgrep coda_emu_peb`
+
 if [[ "$pidlist" != "" ]] ; then
    echo $pidlist
     echo "coda is already running, are you sure you want to start a new coda? this will kill the previous process."
@@ -15,20 +39,64 @@ if [[ "$pidlist" != "" ]] ; then
     fi
 fi
 
+# Kill all previous startCoda remnants
 kcoda
 
-xterm -geometry 60x5+${XPOS}+0 -T "platform" -bg "red" \
+
+# Launch the platform in its own xterm
+echo "Starting platform"
+xterm -geometry 60x5+${PLATFORM_XPOS}+0 -T "platform" -bg "red" \
       -e /bin/bash -c "platform" &
 sleep 8
-xterm -geometry 60x25+${XPOS}+375 -T "Event Builder" -bg "green" \
-      -e /bin/bash -c "PEB_atedf3" &
-xterm -geometry 60x5+${XPOS}+250 -T "rcgui" -bg "yellow" \
-      -e /bin/bash -c "rcgui" &
 
-xterm -ls -n ROC1 -title ROC1--sbsvme28 \
-      -bg white -fg black -sb -geometry 105x16+0+0 \
-      -e ROC_sbsvme28 &
+# Launch the rcgui
+echo "Starting rcgui"
+rcgui &
 
-xterm -ls -n vtpROC -title vtpROC--hallavtp1 \
-      -bg white -fg black -sb -geometry 105x16+0+300 \
-      -e ROC_hallavtp1 &
+set_xterm_title_cmd() {
+    local hostname=$1
+    local component=$2
+    local name=$3
+
+    XTERM_TITLE="$hostname : $component: $name"
+
+    case "$component" in
+	"ROC" )
+	    XTERM_COLOR="green"
+	    XTERM_CMD="remote_vme $hostname $USER ~/work/coda_scripts/startROC.sh"
+	    ;;
+	"PEB" )
+	    XTERM_COLOR="lightblue"
+	    XTERM_CMD="remote_vme $hostname $USER ~/work/coda_scripts/startPEB.sh"
+	    ;;
+    esac
+
+}
+
+# Launch the PEBs
+coda_conf_get_component_list PEB
+PEB_hosts=${CODA_HOSTNAME_LIST[@]}
+
+for host in $PEB_hosts
+do
+    codaconf_get_component_name $host PEB
+    set_xterm_title_cmd $host PEB $CODA_COMPONENT_NAME
+    xterm -geometry 60x25+${PEB_XPOS}+${PEB_YPOS} -T "$XTERM_TITLE" -bg "$XTERM_COLOR" \
+	  -e /bin/bash -c "$XTERM_CMD" &
+    (( PEB_YPOS += PEB_YPOS_INCR ))
+done
+
+# Launch the ROCs
+coda_conf_get_component_list ROC
+ROC_hosts=${CODA_HOSTNAME_LIST[@]}
+
+for host in $ROC_hosts
+do
+    codaconf_get_component_name $host ROC
+    set_xterm_title_cmd $host ROC $CODA_COMPONENT_NAME
+    xterm -geometry 60x25+${ROC_XPOS}+${ROC_YPOS} -T "$XTERM_TITLE" -bg "$XTERM_COLOR" \
+	  -e /bin/bash -c "$XTERM_CMD" &
+    (( ROC_YPOS += ROC_YPOS_INCR ))
+done
+
+exit

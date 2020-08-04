@@ -3,13 +3,14 @@
 # Shell script to start coda_emu_peb
 #
 
-if [ -z $CODA ]; then
-    echo "ERROR: CODA environment variable not defined!"
-    exit -1
-fi
-
 if [ -z $HOSTNAME ]; then
     HOSTNAME=$(hostname -s)
+fi
+
+# CODA 3 PEB needs JAVA_HOME define
+if [ -z $JAVA_HOME ]; then
+    echo "ERROR: \$JAVA_HOME not defined!"
+    exit 1
 fi
 
 . coda_conf_functions
