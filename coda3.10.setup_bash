@@ -1,0 +1,62 @@
+#!/bin/bash
+#
+# Description:
+#       General Setup file for CODA 3.0 - should reside in the CODA distribution
+#  home directory and be named .setup (ie hidden)
+#
+# Author:
+#       D. Abbott
+#       CEBAF Data Acquisition Group
+#
+
+
+export CODA_VERSION=3.1.0
+export OSTYPE=$(uname|sed 's/-/_/')
+export MACHINE=$(uname)-$(uname -m)
+
+#   If not already Set the CODA env variable to the directory path the script is in
+# if [ -n $CODA ]; then
+#     export CODA=${BASH_SOURCE[0]}
+# fi
+
+if [ -n $CMSG_HOME ]; then
+    export CMSG_HOME=${CODA}/src/cMsg
+fi
+
+#  Set some defaults
+export CMSG_LIB=${CODA}/${MACHINE}/lib
+export CODA_BIN=${CODA}/${MACHINE}/bin
+export CODA_LIB=${CODA}/${MACHINE}/lib
+
+#  Now set VME Driver directory
+export CODA_VME=${CODA}/linuxvme
+export CODA_VME_LIB=${CODA_VME}/${MACHINE}/lib
+export CODA_VME_BIN=${CODA_VME}/${MACHINE}/bin
+
+#   Only set TCL Environment variables for CPUs running ROCs - this is currently 32 bit Linux ARCH (RHEL5 and arm7l)
+if [ -e "/dev/vme_ctl" ]; then
+    export TCL_LIBRARY=${CODA}/common/lib/tcl7.4
+    export ITCL_LIBRARY=${CODA}/common/lib/itcl2.0
+    export TK_LIBRARY=${CODA}/common/lib/tk
+    export ITK_LIBRARY=${CODA}/common/lib/itk2.0
+    export DP_LIBRARY=${CODA}/common/lib/dp
+    export TIX_LIBRARY=${CODA}/common/lib/tix
+    export TCLINCLUDE_DIR=${CODA}/common/include
+    export TKINCLUDE_DIR=${CODA}/common/include
+fi
+
+#   Overwrite this in your own .cshrc or setup file!
+export EXPID=your_expt_msql_database_name_goes_here
+
+if [ $CODA_VME ]; then
+    export PATH=${CODA_BIN}:${CODA}/common/bin:${CODA_VME_BIN}:${PATH}
+else
+    export PATH=${CODA_BIN}:${CODA}/common/bin:${PATH}
+fi
+
+# Do not clobber LD_LIBRARY_PATH
+if [ -n $LD_LIBRARY_PATH ]; then
+    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${CMSG_LIB}:${CODA_LIB}:${CODA_VME_LIB}
+else
+    export LD_LIBRARY_PATH=${CMSG_LIB}:${CODA_LIB}:${CODA_VME_LIB}
+fi
