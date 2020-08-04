@@ -11,17 +11,21 @@ USENMAP=1
 isConnected=0
 iter=0
 
-if [ "$#" -eq 1 ]; then  #server name provided
-    CRATE=$1
-elif [ "$#" -eq 2 ]; then  # server name then user name
-    CRATE=$1
-    USER_ARG="-l $2"
-elif [ "$#" -gt 2 ]; then  # more than that... must be the command to execute on ssh
-    CRATE=$1
-    USER_ARG="-l $2"
-    shift 2
-    SSH_ARG="$@"
+if [ "$#" -lt 3 ]; then  #server name provided
+    echo "ERROR: Mush have 3 arguments!"
+    echo "  $# args provided: $@"
+    exit 1
 fi
+
+CRATE=$1
+if [ "$2" == "nobody" ]; then
+    USER_ARG=
+else
+    USER_ARG="-l $2"
+fi
+
+shift 2
+SSH_ARG="$@"
 
 SSH_COMMAND="ssh -t -o ServerAliveInterval=10 $USER_ARG $CRATE $SSH_ARG"
 trap "exit" exit
@@ -39,7 +43,7 @@ function updateTicker()
 
 function check4nmap()
 {
-    nmap -version 2> /dev/null
+    nmap -version &> /dev/null
     rval=$?
 
     if [ "$rval" = "0" ]; then
