@@ -1,0 +1,94 @@
+# -*-Shell-script-*-
+#
+# coda_conf_functions
+#  This file contains functions to be used to parse a coda component
+#  config file.
+#
+#  Currently parses
+#   CODA_COMPONENT_TABLE
+#  Provides variables
+#   CODA_COMPONENT_NAME
+#   CODA_COMPONENT_OPTION
+#   CODA_HOSTMAME_LIST
+#
+#
+
+if [ -z $CODA ]; then
+    echo "ERROR: CODA environment variable not defined!"
+    exit -1
+fi
+
+
+#
+# codaconf_get_component_name hostname type
+#
+#   return the component name
+#
+codaconf_get_component_name() {
+    local component_hostname=$1
+    local component_type=$2
+    local component_name=
+
+    CODA_COMPONENT_NAME=
+    component_name=$(sed -n -r \
+			 "s/^$component_hostname\s+$component_type\s+(\S*).*$/\1/p" \
+			 $CODA_COMPONENT_TABLE)
+
+    if [ -n "$component_name" ]; then
+	CODA_COMPONENT_NAME=$component_name
+	return 1
+    fi
+
+    echo ERROR: Component Name not found for hostname=$component_hostname, type=$component_type
+    return 0
+
+}
+
+#
+# codaconf_get_name_option hostname name
+#
+#   return the component name's option
+#
+codaconf_get_name_option() {
+    local component_hostname=$1
+    local component_name=$2
+    local component_option=
+
+    CODA_COMPONENT_OPTION=
+    component_option=$(sed -n -r \
+			 "s/^$component_hostname\s+\S+\s+$component_name\s+(.*)$/\1/p" \
+			 $CODA_COMPONENT_TABLE)
+
+    if [ -n "$component_option" ]; then
+	CODA_COMPONENT_OPTION=$component_option
+	return 1
+    fi
+
+    echo ERROR: Component Option not found for hostname=$component_hostname, name=$component_name
+    return 0
+
+}
+
+#
+# coda_conf_get_component_list type
+#
+#   return a list (array) of hostnames matching type
+#
+coda_conf_get_component_list() {
+    local component_type=$1
+    local hostname_list=
+
+    CODA_HOSTMAME_LIST=
+    hostname_list=$(sed -n -r \
+			 "s/^(\S+)\s+$component_type\s+.*$/\1/p" \
+			 $CODA_COMPONENT_TABLE)
+
+    if [ -n "$hostname_list" ]; then
+	CODA_HOSTNAME_LIST=($hostname_list)
+	return 1
+    fi
+
+    echo ERROR: Hostnames not found for type=$component_type
+    return 0
+
+}

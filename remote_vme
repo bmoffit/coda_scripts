@@ -2,10 +2,11 @@
 #
 # remote_vme <hostname> <username> <command for remote host>
 #
-CRATE=hallavme14pc
+CRATE=
 USER_ARG=
 SSH_ARG=
 CONNECT_TIMEOUT=600
+USENMAP=1
 
 isConnected=0
 iter=0
@@ -27,26 +28,49 @@ trap "exit" exit
 
 function updateTicker()
 {
-	let "iter += 1"
-	case "$iter" in
-	     0 ) printf " - " "";;
-	     1 ) printf " \ " "";;
-	     2 ) printf " | " "";;
-	     3 ) printf " / " ""; iter=-1;
-	esac
+    let "iter += 1"
+    case "$iter" in
+	0 ) printf " - " "";;
+	1 ) printf " \ " "";;
+	2 ) printf " | " "";;
+	3 ) printf " / " ""; iter=-1;
+    esac
+}
+
+function check4nmap()
+{
+    nmap -version 2> /dev/null
+    rval=$?
+
+    if [ "$rval" = "0" ]; then
+	USENMAP=1
+    else
+	echo "no nmap"
+	USENMAP=0
+    fi
+
 }
 
 function checkCrate()
 {
     local __hostname=$1
     local tmpfile=`mktemp`
+    local statHostname=''
 
-    nmap -oG $tmpfile -T5 -p22 $__hostname > /dev/null
-    local statHostname=`grep -v "^#" $tmpfile | grep $CRATE | grep open`
+    if [ "$USENMAP" = "1" ]; then
+	nmap -oG $tmpfile -T5 -p22 $__hostname > /dev/null
+	statHostname=`grep -v "^#" $tmpfile | grep $CRATE | grep open`
 
-#    echo $statHostname
+	/bin/rm -f $tmpfile
+    else
+	ssh -o ConnectTimeout=1 $__hostname echo
+	local rval=$?
+	if [ "$rval" = 0 ]; then
+	    statHostname="ok"
+	fi
+    fi
 
-    /bin/rm -f $tmpfile
+
 
     printf "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
     if [ -z "$statHostname" ]; then
@@ -60,6 +84,10 @@ function checkCrate()
     fi
 
 }
+
+if [ "$USENMAP" = "1" ]; then
+    check4nmap
+fi
 
 while true; do
 
