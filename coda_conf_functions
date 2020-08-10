@@ -69,7 +69,7 @@ codaconf_get_name_option() {
 	return 1
     fi
 
-    echo ERROR: Component Option not found for hostname=$component_hostname, name=$component_name
+#    echo ERROR: Component Option not found for hostname=$component_hostname, name=$component_name
     return 0
 
 }

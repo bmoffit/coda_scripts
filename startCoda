@@ -67,11 +67,11 @@ set_xterm_title_cmd() {
     case "$component" in
 	"ROC" )
 	    XTERM_COLOR="green"
-	    XTERM_CMD="remote_vme $hostname $USER ~/work/coda_scripts/startROC.sh $name $option"
+	    XTERM_CMD="remote_vme $hostname nobody startROC.sh $name $option"
 	    ;;
 	"PEB" )
 	    XTERM_COLOR="lightblue"
-	    XTERM_CMD="remote_vme $hostname $USER ~/work/coda_scripts/startPEB.sh"
+	    XTERM_CMD="remote_vme $hostname nobody startPEB.sh"
 	    ;;
     esac
 
