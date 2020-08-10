@@ -54,15 +54,15 @@ A collection scripts for use with small scale SBS DAQs.
 
 	* File format:
 
-        HOSTNAME   COMPONENT_TYPE    COMPONENT_NAME   OPTIONAL_ARG
+        `HOSTNAME   COMPONENT_TYPE    COMPONENT_NAME   OPTIONAL_ARG`
 
 	* For example, I have a PEB named PEB1 running on daqpc1:
 
-        daqpc1   PEB   PEB1
+        `daqpc1   PEB   PEB1`
 
 	* For example, I have a ROC named ROC2 running on daqroc2 and needs to run a tcl script to set it's randy factor on startup:
 
-        daqroc2  ROC   ROC2  -t setrf.tcl
+        `daqroc2  ROC   ROC2  -t setrf.tcl`
 
 ## Howto Use
 
