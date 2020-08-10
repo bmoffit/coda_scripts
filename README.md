@@ -8,17 +8,14 @@ A collection scripts for use with small scale SBS DAQs.
 
 * Install scripts on CODA 3 Platform host, ROC and PEB clients.
   * With git
-`
-	git clone git@github.com:bmoffit/coda_scripts.git ~/coda3/coda_scripts-SBS
-`
+
+        git clone git@github.com:bmoffit/coda_scripts.git ~/coda3/coda_scripts-SBS
+
   * From zip
 
-`
-	unzip SBS.zip ~/coda3/
-`
+        unzip SBS.zip ~/coda3/
 
-  * If you're not sharing this directory with the CODA Components (e.g. with NFS),
-    repeat this step for each component.
+  * If you're not sharing this directory with the CODA Components (e.g. with NFS), repeat this step for each component.
 
 
 * Configure environment variables in `setupCODA3.tcsh` or `setupCODA3.bash`
@@ -42,19 +39,18 @@ A collection scripts for use with small scale SBS DAQs.
 
 * Source the `setupCODA3.{tcsh,bash}` in shell setup file for each DAQ component
   * In `.bashrc`
-`
-  export CODA_CONFIG=~/coda3/coda_scripts-SBS
-  source $CODA_CONFIG/setupCODA3.bash
-`
+
+        export CODA_CONFIG=~/coda3/coda_scripts-SBS
+        source $CODA_CONFIG/setupCODA3.bash
+
   * In `.tcshrc`
-  `
-  setenv CODA_CONFIG=~/coda3/coda_scripts-SBS
-  source $CODA_CONFIG/setupCODA3.tcsh
-  `
+
+        setenv CODA_CONFIG=~/coda3/coda_scripts-SBS
+        source $CODA_CONFIG/setupCODA3.tcsh
+
 
   * Modify the config file adding each DAQ component on the host
-	* The file defined by `$CODA_COMPONENT_TABLE` specifies the
-      components that will interact with these scripts
+	* The file defined by `$CODA_COMPONENT_TABLE` specifies the components that will interact with these scripts
 
 	* File format:
 
@@ -64,8 +60,7 @@ A collection scripts for use with small scale SBS DAQs.
 
         daqpc1   PEB   PEB1
 
-	* For example, I have a ROC named ROC2 running on daqroc2 and
-      needs to run a tcl script to set it's randy factor on startup:
+	* For example, I have a ROC named ROC2 running on daqroc2 and needs to run a tcl script to set it's randy factor on startup:
 
         daqroc2  ROC   ROC2  -t setrf.tcl
 
@@ -78,10 +73,13 @@ A collection scripts for use with small scale SBS DAQs.
 	* Enter SESSION name (matches that defined in environment)
 
 * Launch CODA3 and its components
-  startCoda
+
+        startCoda
 
 * Restart ONLY the PEB and ROC components
-  restartStuff
+
+        restartStuff
 
 * Kill ALL CODA components started by startCoda
-  kcoda
+
+        kcoda
