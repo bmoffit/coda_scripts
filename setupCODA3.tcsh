@@ -3,7 +3,9 @@
 # Prune any previous CODA defs in PATH and LD_LIBRARY_PATH
 
 set PATH=`echo $PATH | awk -v RS=: -v ORS=: '/coda/ {next} {print}' | sed 's/:*$//'`
-set LD_LIBRARY_PATH=`echo $LD_LIBRARY_PATH | awk -v RS=: -v ORS=: '/coda/ {next} {print}' | sed 's/:*$//'`
+if ($?LD_LIBRARY_PATH == "1") then
+   set LD_LIBRARY_PATH=`echo $LD_LIBRARY_PATH | awk -v RS=: -v ORS=: '/coda/ {next} {print}' | sed 's/:*$//'`
+endif
 
 ########################################
 # User Specific Configuration
