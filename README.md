@@ -1,5 +1,5 @@
-# coda_scripts - SBS branch
-A collection scripts for use with small scale SBS DAQs.
+# coda_scripts
+A collection scripts for use with small scale DAQs running CODA 3
 
 
 ## Install and Configuration
@@ -9,11 +9,11 @@ A collection scripts for use with small scale SBS DAQs.
 * Install scripts on CODA 3 Platform host, ROC and PEB clients.
   * With git
 
-        git clone git@github.com:bmoffit/coda_scripts.git ~/coda3/coda_scripts-SBS
+        git clone git@github.com:bmoffit/coda_scripts.git ~/coda3/coda_scripts-master
 
   * From zip
 
-        unzip SBS.zip ~/coda3/
+        unzip coda_scripts-master.zip ~/coda3/
 
   * If you're not sharing this directory with the CODA Components (e.g. with NFS), repeat this step for each component.
 
@@ -27,25 +27,25 @@ A collection scripts for use with small scale SBS DAQs.
         setenv SESSION session
         setenv EXPID expid
 
-        setenv COOL_HOME ~/coda3/cool
-        setenv JAVA_HOME /group/da/Java/jdk/jdk1.8.0_152
+	    setenv COOL_HOME ${HOME}/coda3/cool
+        setenv JAVA_HOME ${HOME}/jdk1.8.0_152
 
-        setenv REMEX_CMSG_HOST deepthought
+        setenv REMEX_CMSG_HOST thishost.jlab.org
         setenv REMEX_CMSG_PASSWORD ${EXPID}
 
-        setenv CODA_COMPONENT_TABLE ./config/${EXPID}/coda_component_table.cfg
+        setenv CODA_COMPONENT_TABLE ${CODA_CONFIG}/config/${EXPID}/coda_component_table.cfg
 
 
 
 * Source the `setupCODA3.{tcsh,bash}` in shell setup file for each DAQ component
   * In `.bashrc`
 
-        export CODA_CONFIG=~/coda3/coda_scripts-SBS
+        export CODA_CONFIG=~/coda3/coda_scripts-master
         source $CODA_CONFIG/setupCODA3.bash
 
   * In `.tcshrc`
 
-        setenv CODA_CONFIG=~/coda3/coda_scripts-SBS
+        setenv CODA_CONFIG=~/coda3/coda_scripts-master
         source $CODA_CONFIG/setupCODA3.tcsh
 
 

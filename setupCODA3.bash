@@ -15,16 +15,16 @@ else
     source $CODA_CONFIG/coda3.10.setup_bash
 fi
 
-
-
-
 export SESSION=session
 export EXPID=expid
 
-export COOL_HOME=$CODA_CONFIG/cool_home
-export JAVA_HOME=/group/da/Java/jdk/jdk1.8.0_152
+export COOL_HOME=${HOME}/coda3/cool
+export JAVA_HOME=${HOME}/jdk1.8.0_152
 
-export REMEX_CMSG_HOST=deepthought
+export REMEX_CMSG_HOST=thishost.jlab.org
 export REMEX_CMSG_PASSWORD=${EXPID}
 
 export CODA_COMPONENT_TABLE=$CODA_CONFIG/config/${EXPID}/coda_component_table.cfg
+
+# Add config scripts to path
+export PATH=${CODA_CONFIG}:$PATH
