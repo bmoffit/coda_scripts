@@ -3,9 +3,7 @@
 # Shell script to start coda_emu_peb
 #
 
-if [ -z $HOSTNAME ]; then
-    HOSTNAME=$(hostname -s)
-fi
+HOSTNAME=$(hostname -s)
 
 # CODA 3 PEB needs JAVA_HOME define
 if [ -z $JAVA_HOME ]; then

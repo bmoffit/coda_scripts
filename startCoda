@@ -57,17 +57,21 @@ set_xterm_title_cmd() {
     local hostname=$1
     local component=$2
     local name=$3
+    local option=
+
+    codaconf_get_name_option $hostname $name
+    option=$CODA_COMPONENT_OPTION
 
     XTERM_TITLE="$hostname : $component: $name"
 
     case "$component" in
 	"ROC" )
 	    XTERM_COLOR="green"
-	    XTERM_CMD="remote_vme $hostname $USER ~/work/coda_scripts/startROC.sh"
+	    XTERM_CMD="remote_vme $hostname nobody startROC.sh $name $option"
 	    ;;
 	"PEB" )
 	    XTERM_COLOR="lightblue"
-	    XTERM_CMD="remote_vme $hostname $USER ~/work/coda_scripts/startPEB.sh"
+	    XTERM_CMD="remote_vme $hostname nobody startPEB.sh"
 	    ;;
     esac
 
