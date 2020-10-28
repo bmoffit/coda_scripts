@@ -1,6 +1,7 @@
 # coda_scripts
 A collection scripts for use with small scale DAQs running CODA 3
 
+This repo is no longer updated.  Check the fork at [JeffersonLab](https://github.com/JeffersonLab/coda_scripts).
 
 ## Install and Configuration
 * Setup host ssh key for automated login to CODA component clients.
